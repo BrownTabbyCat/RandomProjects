@@ -1,0 +1,74 @@
+#Scenario 1: ITP purchases on a single day. 
+
+from datetime import datetime
+
+
+def days_between(itp_date, renewal_date):
+  d1 = datetime.strptime(itp_date, "%Y/%m/%d")
+  d2 = datetime.strptime(renewal_date, "%Y/%m/%d")
+  delta = d2-d1
+  days_left = delta.days
+  if days_left > 365:
+    print("This is more than 365 days")
+    return
+  elif days_left < 0:
+    print("Check the dates again.")
+    return
+  else:
+    print(f"The date of purchase is {itp_date} and your renewal date is {renewal_date}.")
+    return days_left 
+  
+
+gold_daily = 180/365
+diamond_daily = 425/365
+platinum_daily = 1000/365
+vip_daily = 5000/365
+
+
+def prorated_total(prorated_days, gold_seats, diamond_seats, platinum_seats, vip_seats, discount, discount_amount):
+  
+  if discount == True: 
+    total_amount = 0
+
+    gold_total = gold_daily * prorated_days * gold_seats
+    print(f"You bought {gold_seats} gold seats and the total amount for gold seats is ${gold_total}.")
+
+    diamond_total = diamond_daily * prorated_days * diamond_seats
+    print(f"You bought {diamond_seats} diamond seats and the total amount for diamond seats is ${diamond_total}.")
+
+    platinum_total = platinum_daily * prorated_days * platinum_seats
+    print(f"You bought {platinum_seats} platinum seats and the total amount for platinum seats is ${platinum_total}.")
+
+    vip_total = vip_daily * prorated_days * vip_seats
+    print(f"You bought {vip_seats} VIP seats and the total amount for VIP seats is ${vip_total}.")
+
+    total_amount += gold_total + diamond_total + platinum_total + vip_total
+    print(f"You have a {discount_amount} discount.") #in percentage
+    return total_amount - (total_amount * discount_amount)
+
+  elif discount == False: 
+    total_amount = 0
+
+    gold_total = gold_daily * prorated_days * gold_seats
+    print(f"You bought {gold_seats} gold seats and the total amount for gold seats is ${gold_total}.")
+
+    diamond_total = diamond_daily * prorated_days * diamond_seats
+    print(f"You bought {diamond_seats} diamond seats and the total amount for diamond seats is ${diamond_total}.")
+
+    platinum_total = platinum_daily * prorated_days * platinum_seats
+    print(f"You bought {platinum_seats} platinum seats and the total amount for platinum seats is ${platinum_total}.")
+
+    vip_total = vip_daily * prorated_days * vip_seats
+    print(f"You bought {vip_seats} VIP seats and the total amount for VIP seats is ${vip_total}.")
+
+    total_amount += gold_total + diamond_total + platinum_total + vip_total
+    return total_amount 
+
+
+
+prorated_days = days_between(itp_date = "2022/12/8", renewal_date = "2023/12/2")
+print(f"There are {prorated_days} days from the purchase date til the renewal date.\n")
+
+itp_purchase = round(prorated_total(prorated_days, gold_seats = 0, diamond_seats = 0, platinum_seats = 0, vip_seats = 1, discount = True, discount_amount= .20), 2) #If there were 0 seats bought for a particular plan, still add 0. 
+print(f"\nThe total amount for this invoice is ${itp_purchase}.")
+print(itp_purchase) #if there are different itp dates, run the function again and add this to the total itp purchase amount for that day.
